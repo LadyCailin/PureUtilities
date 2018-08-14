@@ -1,14 +1,20 @@
 package com.laytonsmith.PureUtilities.Common.Annotations;
 
 import com.laytonsmith.PureUtilities.ClassLoading.ClassDiscovery;
+import com.laytonsmith.PureUtilities.ClassLoading.ClassDiscoveryCache;
+import com.laytonsmith.PureUtilities.ClassLoading.ClassDiscoveryURLCache;
 import com.laytonsmith.PureUtilities.ClassLoading.ClassMirror.ClassMirror;
+import com.laytonsmith.PureUtilities.Common.StreamUtils;
 import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.laytonsmith.PureUtilities.ExhaustiveVisitor;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +27,39 @@ import java.util.Set;
  * checked, and fail if any of the parameters are missing.
  */
 public class AnnotationChecks {
+	
+	public static void main(String[] args) throws Exception {
+		File outputDir = new File(args[0]);
+		File scanDir = new File(args[1]);
+		if(outputDir.toString().startsWith("-classpath") || outputDir.toString().startsWith("-Xdebug")) {
+			// This happens when running locally. In that case, this certainly isn't a release, and
+			// we can skip this process.
+			StreamUtils.GetSystemOut().println("Skipping annotation caching, running locally.");
+			return;
+		}
+		StreamUtils.GetSystemOut().println("-- Caching annotations --");
+		StreamUtils.GetSystemOut().println("Scanning for classes in " + scanDir.getAbsolutePath());
+		StreamUtils.GetSystemOut().println("Outputting file to directory " + outputDir.getAbsolutePath());
+		long start = System.currentTimeMillis();
+		URL cacheFile = new URL("file:" + scanDir.getCanonicalPath());
+		ClassDiscoveryURLCache cache = new ClassDiscoveryURLCache(cacheFile);
+		cache.writeDescriptor(new FileOutputStream(new File(outputDir, ClassDiscoveryCache.OUTPUT_FILENAME)));
+		StreamUtils.GetSystemOut().println("Done writing " + ClassDiscoveryCache.OUTPUT_FILENAME + ", which took " + (System.currentTimeMillis() - start) + " ms.");
+		ClassDiscovery.getDefaultInstance().addPreCache(cacheFile, cache);
+		ClassDiscovery.getDefaultInstance().addDiscoveryLocation(cacheFile);
+		AnnotationChecks.checkAll();
+	}
+	
+	/**
+	 * This method should generally be run at compile time, which performs all the supported checks. If this is not
+	 * desirable for some reason, the other methods may instead be called one by one.
+	 * @throws Exception 
+	 */
+	public static void checkAll() throws Exception {
+		AnnotationChecks.checkForceImplementation();
+		AnnotationChecks.verifyExhaustiveVisitors();
+		AnnotationChecks.verifyNonInheritImplements();
+	}
 
 	@SuppressWarnings("UnnecessaryLabelOnBreakStatement")
 	public static void checkForceImplementation() throws Exception {
