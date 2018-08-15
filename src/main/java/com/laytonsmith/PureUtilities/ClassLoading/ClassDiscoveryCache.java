@@ -36,6 +36,10 @@ public class ClassDiscoveryCache {
 
 	/**
 	 * How much of the file we read in to hash to check for collisions.
+	 * 
+	 * TODO: This is probably bugged. It would be better to read the full
+	 * central directory from the zip file, and hash that instead, as that
+	 * is a guaranteed accurate summary of the whole zip file.
 	 */
 	private static final int READ_SIZE = 2048;
 
