@@ -13,6 +13,11 @@ public final class StackTraceUtils {
 	private StackTraceUtils() {
 	}
 
+	/**
+	 * Gets the stacktrace that would be printed out when doing {@link Throwable#printStackTrace()} as a String.
+	 * @param t
+	 * @return 
+	 */
 	public static String GetStacktrace(Throwable t) {
 		final Writer result = new StringWriter();
 		final PrintWriter printWriter = new PrintWriter(result);
@@ -28,6 +33,11 @@ public final class StackTraceUtils {
 		return result.toString();
 	}
 
+	/**
+	 * Gets the class that called the method above the one making this method call. The implementation of this
+	 * method accounts for the fact that it is itself being called from the method that called it.
+	 * @return 
+	 */
 	public static Class<?> getCallingClass() {
 		try {
 			// This is the class that called us. Calls may bounce around that class,

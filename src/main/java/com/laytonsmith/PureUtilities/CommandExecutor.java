@@ -40,7 +40,6 @@ public class CommandExecutor {
 	 */
 	public static String Execute(String[] args) throws InterruptedException, IOException {
 		final List<Byte> output = new ArrayList<>();
-		CommandExecutor c = new CommandExecutor(args);
 		OutputStream os = new BufferedOutputStream(new OutputStream() {
 
 			@Override
@@ -48,15 +47,54 @@ public class CommandExecutor {
 				output.add((byte) next);
 			}
 		});
-		c.setSystemOut(os);
-		c.start();
-		c.waitFor();
+		new CommandExecutorBuilder().setArgs(args)
+			.setSystemOut(os)
+			.start()
+			.waitFor();
 		byte[] bytes = new byte[output.size()];
-		for(int i = 0; i < output.size(); i++) {
-			bytes[i] = output.get(i).byteValue();
+		for (int i = 0; i < output.size(); i++) {
+			bytes[i] = output.get(i);
 		}
 
 		return new String(bytes, "UTF-8");
+	}
+	
+	/**
+	 * Builds a new CommandExecutor using the default settings for the optional components.
+	 * @param args
+	 * @return 
+	 */
+	public static CommandExecutor Build(String args) {
+		return new CommandExecutorBuilder().setArgs(args).build();
+	}
+	
+	/**
+	 * Builds a new CommandExecutor using the default settings for the optional components.
+	 * @param args
+	 * @return 
+	 */
+	public static CommandExecutor Build(String[] args) {
+		return new CommandExecutorBuilder().setArgs(args).build();
+	}
+	
+	/**
+	 * Builds and starts a new CommandExecutor using the default settings for the optional components.
+	 * @param args
+	 * @return
+	 * @throws IOException 
+	 */
+	public static CommandExecutor Start(String args) throws IOException {
+		return new CommandExecutorBuilder().setArgs(args).start();
+	}
+	
+	/**
+	 * Builds and starts a new CommandExecutor using the default settings for the optional components.
+	 * @param args
+	 * @return
+	 * @throws IOException 
+	 */
+	public static CommandExecutor Start(String[] args) throws IOException {
+		return new CommandExecutorBuilder().setArgs(args).start();
 	}
 
 	private static String[] StringToArray(String s) {
@@ -66,7 +104,7 @@ public class CommandExecutor {
 		return args;
 	}
 
-	public CommandExecutor(String command) {
+	private CommandExecutor(String command) {
 		this(StringToArray(command));
 	}
 
@@ -80,8 +118,90 @@ public class CommandExecutor {
 	private Thread errThread;
 	private Thread inThread;
 
-	public CommandExecutor(String[] command) {
+	private CommandExecutor(String[] command) {
 		args = command;
+	}
+
+	/**
+	 * Using a step builder ensures that there are compile time errors rather than runtime errors, if the various
+	 * parameters are set mid run.
+	 */
+	public static class CommandExecutorBuilder {
+
+		private String[] args;
+		private OutputStream systemErr;
+		private OutputStream systemOut;
+		private InputStream systemIn;
+		private File workingDir;
+
+		public CommandExecutorBuilderOptional setArgs(String args) {
+			return setArgs(StringToArray(args));
+		}
+
+		public CommandExecutorBuilderOptional setArgs(String[] args) {
+			this.args = args;
+			return new CommandExecutorBuilderOptional();
+		}
+
+		public class CommandExecutorBuilderOptional {
+
+			private CommandExecutorBuilderOptional() {
+			}
+
+			public CommandExecutorBuilderOptional setSystemIn(InputStream input) {
+				CommandExecutorBuilder.this.systemIn = input;
+				return this;
+			}
+
+			public CommandExecutorBuilderOptional setSystemOut(OutputStream output) {
+				CommandExecutorBuilder.this.systemOut = output;
+				return this;
+			}
+
+			public CommandExecutorBuilderOptional setSystemErr(OutputStream error) {
+				CommandExecutorBuilder.this.systemErr = error;
+				return this;
+			}
+
+			/**
+			 * Sets the inputs and outputs to be System.in, StreamUtils.GetSystemOut(), and StreamUtils.GetSystemErr().
+			 *
+			 * @return
+			 */
+			public CommandExecutorBuilderOptional setSystemInputsAndOutputs() {
+				setSystemOut(StreamUtils.GetSystemOut());
+				setSystemErr(StreamUtils.GetSystemErr());
+				setSystemIn(System.in);
+				return this;
+			}
+
+			public CommandExecutorBuilderOptional setWorkingDir(File workingDir) {
+				CommandExecutorBuilder.this.workingDir = workingDir;
+				return this;
+			}
+			
+			/**
+			 * Builds and starts the CommandExecutor.
+			 * @return
+			 * @throws IOException 
+			 */
+			public CommandExecutor start() throws IOException {				
+				return build().start();
+			}
+			
+			/**
+			 * Builds, but does not start the CommandExecutor object.
+			 * @return 
+			 */
+			public CommandExecutor build() {
+				CommandExecutor c = new CommandExecutor(args);
+				c.err = systemErr;
+				c.in = systemIn;
+				c.out = systemOut;
+				c.workingDir = workingDir;
+				return c;
+			}
+		}
 	}
 
 	/**
@@ -101,18 +221,18 @@ public class CommandExecutor {
 				InputStream bout = new BufferedInputStream(process.getInputStream());
 				int ret;
 				try {
-					while((ret = bout.read()) != -1) {
-						if(out != null) {
+					while ((ret = bout.read()) != -1) {
+						if (out != null) {
 							out.write(ret);
 						}
 					}
-					if(out != null) {
+					if (out != null) {
 						out.flush();
 					}
 				} catch (IOException ex) {
 					Logger.getLogger(CommandExecutor.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {
-					if(out != null) {
+					if (out != null) {
 						try {
 							out.close();
 						} catch (IOException ex) {
@@ -130,18 +250,18 @@ public class CommandExecutor {
 				InputStream berr = new BufferedInputStream(process.getErrorStream());
 				int ret;
 				try {
-					while((ret = berr.read()) != -1) {
-						if(err != null) {
+					while ((ret = berr.read()) != -1) {
+						if (err != null) {
 							err.write(ret);
 						}
 					}
-					if(err != null) {
+					if (err != null) {
 						err.flush();
 					}
 				} catch (IOException ex) {
 					Logger.getLogger(CommandExecutor.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {
-					if(err != null) {
+					if (err != null) {
 						try {
 							err.close();
 						} catch (IOException ex) {
@@ -152,7 +272,7 @@ public class CommandExecutor {
 			}
 		}, Arrays.toString(args) + "-error");
 		errThread.start();
-		if(in != null) {
+		if (in != null) {
 			inThread = new Thread(new Runnable() {
 
 				@Override
@@ -160,13 +280,13 @@ public class CommandExecutor {
 					OutputStream bin = new BufferedOutputStream(process.getOutputStream());
 					int ret;
 					try {
-						while((ret = in.read()) != -1) {
+						while ((ret = in.read()) != -1) {
 							bin.write(ret);
 						}
 					} catch (IOException ex) {
 						Logger.getLogger(CommandExecutor.class.getName()).log(Level.SEVERE, null, ex);
 					} finally {
-						if(in != null) {
+						if (in != null) {
 							try {
 								in.close();
 							} catch (IOException ex) {
@@ -178,30 +298,6 @@ public class CommandExecutor {
 			}, Arrays.toString(args) + "-input");
 			inThread.start();
 		}
-		return this;
-	}
-
-	public CommandExecutor setSystemIn(InputStream input) {
-		if(process != null) {
-			throw new RuntimeException("Process is already started! Cannot set a new InputStream!");
-		}
-		in = input;
-		return this;
-	}
-
-	public CommandExecutor setSystemOut(OutputStream output) {
-		if(process != null) {
-			throw new RuntimeException("Process is already started! Cannot set a new InputStream!");
-		}
-		out = output;
-		return this;
-	}
-
-	public CommandExecutor setSystemErr(OutputStream error) {
-		if(process != null) {
-			throw new RuntimeException("Process is already started! Cannot set a new OutputStream!");
-		}
-		err = error;
 		return this;
 	}
 
@@ -217,14 +313,6 @@ public class CommandExecutor {
 		return err;
 	}
 
-	public CommandExecutor setWorkingDir(File workingDir) {
-		if(process != null) {
-			throw new RuntimeException("Process is already started! Cannot set a new working directory!");
-		}
-		this.workingDir = workingDir;
-		return this;
-	}
-
 	/**
 	 * Blocks until the underlying process has finished. If the process has already finished, the method will return
 	 * immediately.
@@ -234,14 +322,14 @@ public class CommandExecutor {
 	 */
 	public int waitFor() throws InterruptedException {
 		int ret = process.waitFor();
-		if(out != null) {
+		if (out != null) {
 			try {
 				out.flush();
 			} catch (IOException ex) {
 				Logger.getLogger(CommandExecutor.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		if(err != null) {
+		if (err != null) {
 			try {
 				err.flush();
 			} catch (IOException ex) {
@@ -252,17 +340,4 @@ public class CommandExecutor {
 		errThread.join();
 		return ret;
 	}
-
-	/**
-	 * Sets the inputs and outputs to be System.in, StreamUtils.GetSystemOut(), and StreamUtils.GetSystemErr().
-	 *
-	 * @return
-	 */
-	public CommandExecutor setSystemInputsAndOutputs() {
-		setSystemOut(StreamUtils.GetSystemOut());
-		setSystemErr(StreamUtils.GetSystemErr());
-		setSystemIn(System.in);
-		return this;
-	}
-
 }
