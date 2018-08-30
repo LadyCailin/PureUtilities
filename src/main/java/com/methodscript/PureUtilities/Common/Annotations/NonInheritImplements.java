@@ -46,7 +46,7 @@ public @interface NonInheritImplements {
 		 * @param castType The return interface type
 		 * @param o The object to cast
 		 * @return The original object, cast to the appropriate type
-		 * @throws If the underlying object does not implement the correct type
+		 * @throws ClassCastException If the underlying object does not implement the correct type
 		 */
 		public static <T> T Cast(Class<T> castType, Object o) throws ClassCastException {
 			NonInheritImplements nii = o.getClass().getAnnotation(NonInheritImplements.class);

@@ -289,7 +289,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Shorthand for {@link #PrintObjectTrace(instance, instanceOnly, null)}
+	 * Shorthand for {@link #PrintObjectTrace(java.lang.Object, boolean, java.io.PrintStream)} with a null PrintStream.
 	 *
 	 * @param instance
 	 * @param instanceOnly
@@ -410,6 +410,7 @@ public final class ReflectionUtils {
 	 * Instantiates a class without calling its constructor. In general, the object will be in an unknown state. This
 	 * method should not generally be relied on, and only used in limited cases.
 	 *
+	 * @param <T>
 	 * @param cls The class to instantiate
 	 * @return The newly instantiated object.
 	 * @throws RuntimeException If the underlying code throws an InstantiationException, it is wrapped and re-thrown in

@@ -57,6 +57,7 @@ public class RunnableQueue {
 	/**
 	 * Schedules a runnable to run whenever the queue pump can get to it. Returns immediately.
 	 *
+	 * @param dm
 	 * @param r
 	 */
 	public void invokeLater(final DaemonManager dm, final Runnable r) {

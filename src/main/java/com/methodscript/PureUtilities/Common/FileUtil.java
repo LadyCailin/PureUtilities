@@ -151,6 +151,7 @@ public final class FileUtil {
 	 * @param data The string to write to the file
 	 * @param file The File to write to
 	 * @param mode Either OVERWRITE or APPEND
+	 * @param create
 	 * @throws IOException If the File f cannot be written to
 	 */
 	public static void write(byte[] data, File file, int mode, boolean create) throws IOException {
@@ -239,6 +240,10 @@ public final class FileUtil {
 
 	/**
 	 * Shorthand for write(s, f, OVERWRITE, create)
+	 * @param s
+	 * @param f
+	 * @param create
+	 * @throws java.io.IOException
 	 */
 	public static void write(String s, File f, boolean create) throws IOException {
 		write(s, f, OVERWRITE, create);
@@ -349,6 +354,8 @@ public final class FileUtil {
 	 *
 	 * @param from
 	 * @param to
+	 * @return 
+	 * @throws java.io.IOException
 	 */
 	public static boolean move(File from, File to) throws IOException {
 		FileUtils.moveFile(from, to);

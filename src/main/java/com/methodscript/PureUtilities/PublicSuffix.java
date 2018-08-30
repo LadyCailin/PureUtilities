@@ -63,14 +63,14 @@ import java.util.regex.Pattern;
  * | com          |
  * | exception: 0 |        +--------------+
  * | stopOK: 0    |        | foo          |
- * | children ----|------> | exception: 0 |
+ * | children ----|------  | exception: 0 |
  * +--------------+        | stopOK: 1    |
  *                         | children     |
  *                         +--------------+
  *                         | bar          |
  *                         | exception: 0 |        +--------------+
  *                         | stopOK: 0    |        | *            |
- *                         | children ----|------> | exception: 0 |
+ *                         | children ----|------  | exception: 0 |
  *                         +--------------+        | stopOK: 1    |
  *                                                 | children     |
  *                                                 +--------------+
@@ -80,7 +80,6 @@ import java.util.regex.Pattern;
  *                                                 | children     |
  *                                                 +--------------+
  * </pre>
- * </p>
  * <p>
  * TODO: Add support for IDN (See java6 java.net.IDN).</p>
  * <p>
@@ -102,6 +101,7 @@ public final class PublicSuffix {
 
 	/**
 	 * Returns the PublicSuffix instance based on the default data source
+	 * @return 
 	 */
 	public static PublicSuffix get() {
 		if(defaultInstance == null) {

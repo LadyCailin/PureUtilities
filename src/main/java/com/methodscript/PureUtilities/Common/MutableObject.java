@@ -4,6 +4,7 @@ package com.methodscript.PureUtilities.Common;
  * This class wraps an object, which is mutable. Useful for places where you must be able to manipulate a final
  * variable, for instance, in anonymous classes. The common Object methods are forwarded to the underlying object,
  * unless it is null, in which case various defaults are returned.
+ * @param <T> The underlying Object type
  */
 public final class MutableObject<T> {
 

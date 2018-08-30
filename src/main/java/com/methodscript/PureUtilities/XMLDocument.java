@@ -65,7 +65,10 @@ public class XMLDocument {
 	 * Given an XML document in a string, creates a new XMLDocument.
 	 *
 	 * @param document
-	 * @throws IOException If any IO error occurs
+	 * @param encoding
+	 * @throws java.io.UnsupportedEncodingException If the provided encoding is not supported
+	 * @throws org.xml.sax.SAXException If the XML document is not valid
+	 * 
 	 */
 	public XMLDocument(String document, String encoding) throws UnsupportedEncodingException, SAXException {
 		this();
@@ -328,6 +331,7 @@ public class XMLDocument {
 	 *
 	 * @param xpath
 	 * @return
+	 * @throws javax.xml.xpath.XPathExpressionException
 	 */
 	public int countChildren(String xpath) throws XPathExpressionException {
 		Element e = getElement(xpath);

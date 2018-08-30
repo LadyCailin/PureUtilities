@@ -621,7 +621,7 @@ public class ClassMirror<T> implements Serializable {
 		/**
 		 * Maps inherited classes to the generic parameters passed along to the
 		 * inhereted class. For instance, if we have class Base implements
-		 * A<Integer, Long>, B<String> {...} then this object would contain {A:
+		 * A&lt;Integer, Long&gt;, B&lt;String&gt; {...} then this object would contain {A:
 		 * [Integer, Long], B: [String]}
 		 */
 		public Map<ClassReferenceMirror<?>, List<ClassReferenceMirror<?>>> genericParameters

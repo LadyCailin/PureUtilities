@@ -134,7 +134,7 @@ public class RequestSettings {
 
 	/**
 	 *
-	 * @param proxyAddress The proxy for this connection to use
+	 * @param proxy The proxy for this connection to use
 	 * @return
 	 */
 	public RequestSettings setProxy(Proxy proxy) {
@@ -291,7 +291,7 @@ public class RequestSettings {
 	/**
 	 * Sets whether or not cert checking is disabled. If this is true, NO certificate checking is done, and all
 	 * certificates will be considered valid. If this is true, {@link #setUseDefaultTrustStore(boolean)} and
-	 * {@link #setTrustStore(java.util.Map)} are ignored.
+	 * {@link #setTrustStore(java.util.LinkedHashMap)} are ignored.
 	 *
 	 * @param check
 	 * @return
@@ -312,8 +312,8 @@ public class RequestSettings {
 
 	/**
 	 * Sets whether or not to use the default trust store. If false, then only certificates registered using
-	 * {@link #setTrustStore(java.util.Map)} will be accepted. If this is false, and
-	 * {@link #setTrustStore(java.util.Map)} is false, this effectively prevents any ssl connections.
+	 * {@link #setTrustStore(java.util.LinkedHashMap)} will be accepted. If this is false, and
+	 * {@link #setTrustStore(java.util.LinkedHashMap)} is false, this effectively prevents any ssl connections.
 	 *
 	 * @param useDefaultTrustStore
 	 * @return

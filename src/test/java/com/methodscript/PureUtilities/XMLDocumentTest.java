@@ -57,9 +57,6 @@ public class XMLDocumentTest {
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", output);
 	}
 
-	/**
-	 * Test of setNode method, of class XMLDocument.
-	 */
 	@Test
 	public void testSetNode() throws XPathExpressionException {
 		doc = new XMLDocument();
@@ -90,6 +87,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of getNode method, of class XMLDocument.
+	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testGetNode() throws Exception {
@@ -98,6 +96,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of getBoolean method, of class XMLDocument.
+	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testGetBoolean() throws Exception {
@@ -106,6 +105,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of getInt method, of class XMLDocument.
+	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testGetInt() throws Exception {
@@ -114,6 +114,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of getLong method, of class XMLDocument.
+	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testGetLong() throws Exception {
@@ -122,6 +123,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of getDouble method, of class XMLDocument.
+	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testGetDouble() throws Exception {
@@ -130,6 +132,7 @@ public class XMLDocumentTest {
 
 	/**
 	 * Test of nodeExists method, of class XMLDocument.
+	 * @throws javax.xml.xpath.XPathExpressionException
 	 */
 	@Test
 	public void testNodeExists() throws XPathExpressionException {

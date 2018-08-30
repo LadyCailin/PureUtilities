@@ -109,6 +109,10 @@ public class Preferences {
 	 * Provide the name of the app, and logger, for recording errors, and a list of defaults, in case the value is not
 	 * provided by the user, or an invalid value is provided. It also writes a custom header at the top of the file.
 	 * Newlines are supported, but only \n
+	 * @param appName
+	 * @param logger
+	 * @param defaults
+	 * @param header
 	 */
 	public Preferences(String appName, Logger logger, List<Preference> defaults, String header) {
 		this.appName = appName;
@@ -124,6 +128,7 @@ public class Preferences {
 	/**
 	 * Provide the name of the app, and logger, for recording errors, and a list of defaults, in case the value is not
 	 * provided by the user, or an invalid value is provided.
+	 * @param defaults
 	 */
 	public Preferences(String appName, Logger logger, List<Preference> defaults) {
 		this(appName, logger, defaults, "");
@@ -135,7 +140,7 @@ public class Preferences {
 	 * complete preferences in the file location specified.
 	 *
 	 * @param prefFile
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	public void init(File prefFile) throws IOException {
 		this.prefFile = prefFile;

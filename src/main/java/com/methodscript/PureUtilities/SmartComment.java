@@ -42,9 +42,8 @@ public class SmartComment {
 	 *
 	 * @param comment The comment to be parsed
 	 * @param replacements This is used to replace embedded annotations with some other text. For instance, if the
-	 * comment contained {
-	 * @ code myCode }, (minus spaces) it may be used to return "&lt;code&gt;myCode&lt;/code&gt;". By default, if a
-	 * particular embedded annotation has no handler, the embedded text is simply used as is.
+	 * comment contained {&#64;code myCode}, it may be used to return "&lt;code&gt;myCode&lt;/code&gt;". By default, 
+	 * if a particular embedded annotation has no handler, the embedded text is simply used as is.
 	 */
 	public SmartComment(String comment, Map<String, Replacement> replacements) {
 		if(replacements == null) {

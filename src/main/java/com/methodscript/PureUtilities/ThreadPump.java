@@ -39,9 +39,10 @@ public abstract class ThreadPump {
 	 * to prevent starvation.
 	 * @param waitTime The amount of time to wait before resuming if the maxHoldTime was met, and thread control was
 	 * returned.
+	 * @param threadName The name for the thread pump thread
 	 */
 	protected ThreadPump(int minHoldTime, int maxHoldTime, int waitTime, String threadName) {
-		eventPump = new LinkedList<Runnable>();
+		eventPump = new LinkedList<>();
 		startStack = 0;
 		waitForStopLock = new Object();
 		waitForTaskLock = new Object();
@@ -75,6 +76,7 @@ public abstract class ThreadPump {
 	/**
 	 * Stops a transaction, but waits for all tasks to complete before returning. This should ONLY be called if this is
 	 * the top level stop, and an exception will be thrown if the start stack is not 1.
+	 * @throws java.lang.InterruptedException
 	 */
 	public void waitForStop() throws InterruptedException {
 		if(startStack != 1) {
@@ -102,6 +104,7 @@ public abstract class ThreadPump {
 	 *
 	 * @param callable
 	 * @return
+	 * @throws java.lang.InterruptedException
 	 */
 	public Object invokeNow(final Callable<?> callable) throws InterruptedException {
 		final Object myLock = new Object();

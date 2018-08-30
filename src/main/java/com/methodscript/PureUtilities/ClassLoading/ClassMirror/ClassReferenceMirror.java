@@ -7,6 +7,7 @@ import java.io.Serializable;
  * A class reference mirror is a wrapper around a simple class name reference. It cannot directly get more information
  * about a class without actually loading it, so minimal information is available directly, though there is a method for
  * loading the actual class referenced, at which point more information could be retrieved.
+ * @param <T>
  */
 public class ClassReferenceMirror<T> implements Serializable {
 
@@ -58,7 +59,9 @@ public class ClassReferenceMirror<T> implements Serializable {
 	 * must be able to find the class.
 	 *
 	 * @param loader
+	 * @param initialize
 	 * @return
+	 * @throws java.lang.ClassNotFoundException
 	 */
 	public Class<T> loadClass(ClassLoader loader, boolean initialize) throws ClassNotFoundException {
 		return ClassUtils.forCanonicalName(ClassUtils.getCommonNameFromJVMName(name), initialize, loader);

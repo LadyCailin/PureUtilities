@@ -1,7 +1,9 @@
 package com.methodscript.PureUtilities.ClassLoading;
 
 /**
- *
+ * 
+ * @param <Abstracted>
+ * @param <Concrete>
  */
 public abstract class DynamicEnum<Abstracted extends Enum, Concrete> {
 

@@ -27,6 +27,8 @@ public class Point3D {
 
 	/**
 	 * Initializes the X and Y values. Z is initialized to 0.
+	 * @param x
+	 * @param y
 	 */
 	public Point3D(double x, double y) {
 		this.x = x;

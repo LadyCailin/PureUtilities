@@ -44,6 +44,7 @@ public class SAXDocument {
 	 *
 	 * @param document The XML document in a string
 	 * @param encoding The encoding of the stream. If null, UTF-8 is used.
+	 * @throws java.io.UnsupportedEncodingException
 	 */
 	public SAXDocument(String document, String encoding) throws UnsupportedEncodingException {
 		this(new ByteArrayInputStream(document.getBytes(encoding == null ? "UTF-8" : encoding)));
@@ -232,7 +233,7 @@ public class SAXDocument {
 		/**
 		 * Called when a matched element is fully read in.
 		 *
-		 * @param path The XPath of this element. This will be a canonical reference to the element, so will not
+		 * @param xpath The XPath of this element. This will be a canonical reference to the element, so will not
 		 * necessarily match the XPath you passed in to tag this element with.
 		 * @param tag The element name
 		 * @param attr The attributes on the element

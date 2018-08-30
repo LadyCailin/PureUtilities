@@ -139,7 +139,7 @@ import java.util.Set;
  *   public static class GeneratedIDV2 extends GeneratedID {}
  *
  *   {@code @ExhaustiveVisitor.VisitorInfo(baseClass = UserID.class, directSubclassOnly = false)}
- *    public static class CanadianVisitor extends ExhaustiveVisitor<UserID> {
+ *    public static class CanadianVisitor extends ExhaustiveVisitor&lt;UserID&gt; {
  *	public void visit(PhoneNumber n) {
  *		System.out.println("Canadian PhoneNumber");
  *	}
@@ -154,7 +154,7 @@ import java.util.Set;
  *   }
  *
  *   {@code @ExhaustiveVisitor.VisitorInfo(baseClass = UserID.class, directSubclassOnly = false)}
- *   public static class AmericanVisitor extends ExhaustiveVisitor<UserID> {
+ *   public static class AmericanVisitor extends ExhaustiveVisitor&lt;UserID&gt; {
  *	public void visit(PhoneNumber n) {
  *		System.out.println("American PhoneNumber");
  *	}
@@ -186,8 +186,10 @@ import java.util.Set;
  *
  *
  * @author cailin
+ * @param <T> The superclass type
+ * @param <R> The return type for the visit method
  */
-public class ExhaustiveVisitor<T> {
+public class ExhaustiveVisitor<T, R> {
 
 	/**
 	 * The name of the visit method
@@ -213,8 +215,9 @@ public class ExhaustiveVisitor<T> {
 	 * Calls the appropriate subclassed method based on the runtime type of the parameter passed in.
 	 *
 	 * @param object
+	 * @return 
 	 */
-	public final void visit(T object) {
+	public final R visit(T object) {
 		VisitorInfo info = this.getClass().getDeclaredAnnotation(VisitorInfo.class);
 		Method candidate = null;
 		Class<?> searchFor = object.getClass();
@@ -240,7 +243,7 @@ public class ExhaustiveVisitor<T> {
 					+ this.getClass().getName());
 		}
 		try {
-			candidate.invoke(this, object);
+			return (R)candidate.invoke(this, object);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -252,6 +255,8 @@ public class ExhaustiveVisitor<T> {
 		VisitorInfo info = clazz.getAnnotation(VisitorInfo.class);
 		Class<?> baseClass = classMirror.getGenerics()
 				.get(new ClassMirror<>(ExhaustiveVisitor.class).getClassReference()).get(0).loadClass();
+		Class<?> returnType = classMirror.getGenerics()
+				.get(new ClassMirror<>(ExhaustiveVisitor.class).getClassReference()).get(1).loadClass();
 		List<String> uhohs = new ArrayList<>();
 		// Make sure all public visit methods have only one parameter (which extends T) and return void
 		Set<Class<?>> handledClasses = new HashSet<>();
@@ -261,8 +266,8 @@ public class ExhaustiveVisitor<T> {
 				continue;
 			}
 			if(VISIT.equals(m.getName()) && (m.getModifiers() & Modifier.PUBLIC) != 0) {
-				if(m.getReturnType() != void.class) {
-					uhohs.add("Return type of public visit() methods must be void, but "
+				if(!validateReturnType(m.getReturnType(), returnType)) {
+					uhohs.add("Return type of public visit() methods must be " + returnType.getName() + ", but "
 							+ clazz.getName() + " " + m + " does not conform");
 				}
 				if(m.getParameterTypes().length != 1) {
@@ -313,6 +318,40 @@ public class ExhaustiveVisitor<T> {
 		if(!uhohs.isEmpty()) {
 			throw new RuntimeException(StringUtils.Join(uhohs, "\n"));
 		}
+	}
+	
+	private static boolean validateReturnType(Class<?> actual, Class<?> expected) {
+		if(actual == expected) {
+			return true;
+		}
+		if(expected == Void.class) {
+			return actual == void.class;
+		}
+		if(expected == Byte.class) {
+			return actual == byte.class;
+		}
+		if(expected == Short.class) {
+			return actual == short.class;
+		}
+		if(expected == Integer.class) {
+			return actual == int.class;
+		}
+		if(expected == Long.class) {
+			return actual == long.class;
+		}
+		if(expected == Float.class) {
+			return actual == float.class;
+		}
+		if(expected == Double.class) {
+			return actual == double.class;
+		}
+		if(expected == Character.class) {
+			return actual == char.class;
+		}
+		if(expected == Boolean.class) {
+			return actual == boolean.class;
+		}
+		return false;
 	}
 
 }

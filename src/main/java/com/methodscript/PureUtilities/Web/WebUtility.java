@@ -80,6 +80,9 @@ public final class WebUtility {
 	 *
 	 * @param url The url to navigate to
 	 * @param method The HTTP method to use
+	 * @param headers The headers to be sent. In the HTTP protocol, multiple of the same header is allowed, so the map
+	 * maps from String to a list of Strings, where the String is the name of the header, and each String in the List
+	 * corresponds to a value in each instance of the header.
 	 * @param parameters The parameters to be sent. Parameters can be also specified directly in the URL, and they will
 	 * be merged. May be null.
 	 * @param cookieStash An instance of a cookie stash to use, or null if none is needed. Cookies will automatically be
@@ -88,6 +91,7 @@ public final class WebUtility {
 	 * @param timeout Sets the timeout in ms for this connection. 0 means no timeout. If the timeout is reached, a
 	 * SocketTimeoutException will be thrown.
 	 * @return
+	 * @throws java.net.SocketTimeoutException
 	 * @throws IOException
 	 */
 	public static HTTPResponse GetPage(URL url, HTTPMethod method, Map<String, List<String>> headers,
@@ -103,17 +107,9 @@ public final class WebUtility {
 	 * driven, consider using the GetPage that requires a HTTPResponseCallback.
 	 *
 	 * @param url The url to navigate to
-	 * @param method The HTTP method to use
-	 * @param parameters The parameters to be sent. Parameters can be also specified directly in the URL, and they will
-	 * be merged. May be null.
-	 * @param cookieStash An instance of a cookie stash to use, or null if none is needed. Cookies will automatically be
-	 * added and used from this instance.
-	 * @param followRedirects If 300 code responses should automatically be followed.
-	 * @param timeout Sets the timeout in ms for this connection. 0 means no timeout. If the timeout is reached, a
-	 * SocketTimeoutException will be thrown.
-	 * @param username The username to use in response to HTTP Basic authentication. Null ignores this parameter.
-	 * @param password The password to use in response to HTTP Basic authentication. Null ignores this parameter.
+	 * @param settings The settings for this call
 	 * @return
+	 * @throws java.net.SocketTimeoutException
 	 * @throws IOException
 	 */
 	public static HTTPResponse GetPage(URL url, RequestSettings settings) throws SocketTimeoutException, IOException {
@@ -165,6 +161,7 @@ public final class WebUtility {
 
 	/**
 	 * Makes an asynchronous call to a URL, and runs the callback when finished.
+	 * @param callback
 	 */
 	public static void GetPage(final URL url, final RequestSettings settings, final HTTPResponseCallback callback) {
 		URL_RETRIEVER_POOL.submit(new Runnable() {
@@ -191,6 +188,7 @@ public final class WebUtility {
 	 *
 	 * @param url
 	 * @return
+	 * @throws java.io.IOException
 	 */
 	public static HTTPResponse GetPage(URL url) throws IOException {
 		return GetPage(url, null);
@@ -212,7 +210,7 @@ public final class WebUtility {
 	 * received cookies.
 	 *
 	 * @param url
-	 * @param settings
+	 * @param requestSettings
 	 * @return
 	 * @throws SocketTimeoutException
 	 * @throws IOException
@@ -572,7 +570,7 @@ public final class WebUtility {
 	}
 
 	/**
-	 * Given a query string "a=1&b=2", returns a map of that data
+	 * Given a query string "a=1&amp;b=2", returns a map of that data
 	 *
 	 * @param query
 	 * @return

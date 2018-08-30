@@ -367,8 +367,8 @@ public class Color implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the RGB value representing the color in the default sRGB {@link ColorModel}. (Bits 24-31 are alpha, 16-23
-	 * are red, 8-15 are green, 0-7 are blue).
+	 * Returns the RGB value representing the color in the default sRGB {@link java.awt.image.ColorModel}. 
+	 * (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue).
 	 *
 	 * @return the RGB value of the color in the default sRGB <code>ColorModel</code>.
 	 * @see java.awt.image.ColorModel#getRGBdefault

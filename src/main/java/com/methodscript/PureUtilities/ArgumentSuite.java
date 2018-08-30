@@ -36,6 +36,7 @@ public class ArgumentSuite {
 	 *
 	 * @param modeName The name of this mode. This may not contain spaces.
 	 * @param mode The sub-ArgumentParser that will be used when in this mode.
+	 * @return 
 	 * @throws IllegalArgumentException if the name of the mode contains spaces
 	 */
 	public ArgumentSuite addMode(String modeName, ArgumentParser mode) {
@@ -99,6 +100,7 @@ public class ArgumentSuite {
 	 * @param defaultMode The default mode, which will be used only if no arguments were passed in.
 	 * @return
 	 * @throws ResultUseException if the mode cannot be found, or if the sub-ArgumentParser throws an exception.
+	 * @throws com.methodscript.PureUtilities.ArgumentParser.ValidationException
 	 */
 	public ArgumentSuiteResults match(String[] args, String defaultMode) throws ResultUseException, ValidationException {
 		String[] nonModeArgs = ArrayUtils.EMPTY_STRING_ARRAY;
@@ -129,6 +131,7 @@ public class ArgumentSuite {
 	 * @param defaultMode The default mode, which will be used only if no arguments were passed in.
 	 * @return
 	 * @throws ResultUseException if the mode cannot be found, or if the sub-ArgumentParser throws an exception.
+	 * @throws com.methodscript.PureUtilities.ArgumentParser.ValidationException
 	 */
 	public ArgumentSuiteResults match(String args, String defaultMode) throws ResultUseException, ValidationException {
 		//We're going to use ArgumentParser's parse method to get a string list, then
@@ -192,9 +195,8 @@ public class ArgumentSuite {
 	/**
 	 * A convenience method to get the underlying ArgumentParser based on the mode name given. Aliases will not suffice,
 	 * but you may call getModeFromAlias to resolve the mode name first. Null is returned if no mode exists with that
-	 * name. Useful for perhaps a help mode, to generically display a mode's help. If {
-	 *
-	 * @see mode} is null, null is returned.
+	 * name. Useful for perhaps a help mode, to generically display a mode's help. If {@code mode} is null, null is
+	 * returned.
 	 * @param mode
 	 * @return
 	 */

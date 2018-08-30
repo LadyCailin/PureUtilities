@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * insert values into the internal map, and values are not allowed to be removed.
  *
  * @author cailin
+ * @param <T>
+ * @param <V>
  */
 public class ConcurrentSingletonHashMap<T, V> implements Map<T, V> {
 
@@ -132,7 +134,6 @@ public class ConcurrentSingletonHashMap<T, V> implements Map<T, V> {
 	 * This method unconditionally throws an exception.
 	 *
 	 * @param m
-	 * @return
 	 * @throws UnsupportedOperationException Put operations are not allowed, and so this exception is always thrown.
 	 */
 	@Override
@@ -142,9 +143,7 @@ public class ConcurrentSingletonHashMap<T, V> implements Map<T, V> {
 
 	/**
 	 * This method unconditionally throws an exception.
-	 *
-	 * @param key
-	 * @return
+
 	 * @throws UnsupportedOperationException Remove operations are not allowed, and so this exception is always thrown.
 	 */
 	@Override

@@ -16,11 +16,12 @@ import java.util.Set;
  * override the comparison to check if "A" were equal to "a". You could do this with a TreeSet, by providing a custom
  * comparator, but if ordering is also important, then you can't use it either. This provides the best of both worlds by
  * providing insertion order guarantees, while still allowing you to override the comparison mechanism.
+ * @param <T> The type of the underlying objects
  */
 public class LinkedComparatorSet<T> extends AbstractSet<T> implements Set<T> {
 
 	final EqualsComparator comparator;
-	final List<T> list = new ArrayList<T>();
+	final List<T> list = new ArrayList<>();
 
 	/**
 	 * Creates an empty {@link LinkedComparatorSet} with the given comparator.
@@ -43,8 +44,8 @@ public class LinkedComparatorSet<T> extends AbstractSet<T> implements Set<T> {
 	public LinkedComparatorSet(Collection c, EqualsComparator comparator) {
 		this.comparator = comparator;
 		if(c != null && comparator != null) {
-			Set<Integer> skip = new HashSet<Integer>();
-			List<T> array = new ArrayList<T>(c);
+			Set<Integer> skip = new HashSet<>();
+			List<T> array = new ArrayList<>(c);
 			for(int i = 0; i < c.size(); i++) {
 				if(skip.contains(i)) {
 					continue;
@@ -162,6 +163,7 @@ public class LinkedComparatorSet<T> extends AbstractSet<T> implements Set<T> {
 	/**
 	 * This can be passed in to the constructor of {@link LinkedComparatorSet} to "override" the equals contract of the
 	 * sub elements, and that will be used instead.
+	 * @param <T>
 	 */
 	public static interface EqualsComparator<T> {
 

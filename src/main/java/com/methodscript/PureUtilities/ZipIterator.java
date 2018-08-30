@@ -23,7 +23,7 @@ public class ZipIterator {
 	 * Iterates a zip file.
 	 *
 	 * @param callback
-	 * @throws FileNotFoundException
+	 * @throws java.io.IOException
 	 */
 	public void iterate(ZipIteratorCallback callback) throws IOException {
 		iterate(callback, null);
@@ -33,7 +33,8 @@ public class ZipIterator {
 	 * Iterates a zip file.
 	 *
 	 * @param callback
-	 * @throws FileNotFoundException
+	 * @param progressIterator
+	 * @throws java.io.IOException
 	 */
 	public void iterate(ZipIteratorCallback callback, final ProgressIterator progressIterator) throws IOException {
 		final ZipInputStream zis = new ZipInputStream(new FileInputStream(zip));

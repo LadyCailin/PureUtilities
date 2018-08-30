@@ -43,8 +43,10 @@ public class LogicUtils {
 		}
 
 		/**
-		 * Returns true if the element is equal to NONE of the values on the list. LogicUtils.get(a).equalsNone(b, c, d)
-		 * is equivalent to a != b && a != c && a != d
+		 * Returns true if the element is equal to NONE of the values on the list. 
+		 * {@code LogicUtils.get(a).equalsNone(b, c, d)} is equivalent to {@code a != b && a != c && a != d}
+		 * @param o
+		 * @return 
 		 */
 		public boolean equalsNone(Object... o) {
 			if(obj == null) {
@@ -66,7 +68,7 @@ public class LogicUtils {
 		/**
 		 * Returns true if the elements are equal
 		 *
-		 * @param obj
+		 * @param o
 		 * @return
 		 */
 		@Override

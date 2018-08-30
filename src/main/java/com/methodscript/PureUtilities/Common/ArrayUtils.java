@@ -694,6 +694,7 @@ public class ArrayUtils {
 	 * Returns a new array, based on the runtime type of the list.
 	 *
 	 * @param <T>
+	 * @param clazz
 	 * @param list
 	 * @return
 	 */
@@ -713,7 +714,7 @@ public class ArrayUtils {
 	 * @param <T>
 	 * @param array Despite being an Object, instead of an Object[], this will throw a ClassCastException if it is not
 	 * an array type.
-	 * @param toClass
+	 * @param toArrayClass
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

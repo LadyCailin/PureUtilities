@@ -13,6 +13,8 @@ public final class DateUtils {
 
 	/**
 	 * Convenience notation for ParseCalendarNotation(name, null)
+	 * @param name
+	 * @return 
 	 */
 	public static String ParseCalendarNotation(String name) {
 		return ParseCalendarNotation(name, null);
@@ -20,7 +22,7 @@ public final class DateUtils {
 
 	/**
 	 * Parses a calendar notation. The following patterns are replaced with the following:
-	 * <table>
+	 * <table summary="">
 	 * <tr><td>%Y</td><td>Year</td></tr>
 	 * <tr><td>%M</td><td>Month</td></tr>
 	 * <tr><td>%D</td><td>Day</td></tr>

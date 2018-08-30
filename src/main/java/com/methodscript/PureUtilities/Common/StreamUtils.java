@@ -38,7 +38,7 @@ public class StreamUtils {
 	 * data. This assumes that the stream is finite, i.e. not a streaming socket, for instance, and reads until the
 	 * stream reaches the end.
 	 *
-	 * @param out
+	 * @param in
 	 * @return
 	 */
 	public static String GetString(InputStream in) {

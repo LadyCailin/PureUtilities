@@ -21,6 +21,7 @@ public class Vector3D extends Point3D {
 
 	/**
 	 * Initializes the X and Y values. Z is initialized to 0.
+	 * @param y
 	 */
 	public Vector3D(double x, double y) {
 		super(x, y, 0);

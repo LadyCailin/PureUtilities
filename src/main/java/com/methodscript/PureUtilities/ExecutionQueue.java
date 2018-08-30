@@ -70,6 +70,7 @@ public class ExecutionQueue {
 	/**
 	 * Pushes a new runnable onto the end of the specified queue
 	 *
+	 * @param dm The system's DaemonManager
 	 * @param queue The named queue
 	 * @param r
 	 */
@@ -85,7 +86,8 @@ public class ExecutionQueue {
 	/**
 	 * Pushes a new element to the front of the queue, barring other calls to pushFront, this runnable will go next.
 	 *
-	 * @param queue
+	 * @param dm The system's DaemonManager
+	 * @param queue The named queue
 	 * @param r
 	 */
 	public final void pushFront(DaemonManager dm, String queue, Runnable r) {

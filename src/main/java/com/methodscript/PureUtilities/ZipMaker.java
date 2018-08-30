@@ -26,6 +26,7 @@ public final class ZipMaker {
 	 *
 	 * @param startingDir The directory to zip up
 	 * @param filename The name of the zip file to create
+	 * @throws java.io.IOException
 	 */
 	public static void MakeZip(File startingDir, String filename) throws IOException {
 		MakeZip(startingDir, filename, false);
@@ -39,6 +40,7 @@ public final class ZipMaker {
 	 * @param filename The name of the zip file to create
 	 * @param createTopLevelFolder If true, then files in the zip will be created inside a folder named the same as the
 	 * filename (minus extension)
+	 * @throws java.io.IOException
 	 */
 	public static void MakeZip(File startingDir, String filename, boolean createTopLevelFolder) throws IOException {
 		String topLevel = "";

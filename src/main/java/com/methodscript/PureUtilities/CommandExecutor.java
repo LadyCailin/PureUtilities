@@ -26,6 +26,8 @@ public class CommandExecutor {
 	 *
 	 * @param command
 	 * @return
+	 * @throws java.lang.InterruptedException
+	 * @throws java.io.IOException
 	 */
 	public static String Execute(String command) throws InterruptedException, IOException {
 		return Execute(StringToArray(command));
@@ -37,6 +39,8 @@ public class CommandExecutor {
 	 *
 	 * @param args
 	 * @return
+	 * @throws java.lang.InterruptedException
+	 * @throws java.io.IOException
 	 */
 	public static String Execute(String[] args) throws InterruptedException, IOException {
 		final List<Byte> output = new ArrayList<>();

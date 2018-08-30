@@ -338,7 +338,8 @@ public final class ArgumentParser {
 		 *
 		 * @param flag
 		 * @return
-		 * @throws ResultUseException, NumberFormatException
+		 * @throws ResultUseException
+		 * @throws NumberFormatException
 		 */
 		public Double getNumberArgument(Character flag) throws ResultUseException {
 			return getNumberArgument(getArg(flag));
@@ -351,7 +352,8 @@ public final class ArgumentParser {
 		 *
 		 * @param flag
 		 * @return
-		 * @throws ResultUseException, NumberFormatException
+		 * @throws ResultUseException
+		 * @throws NumberFormatException
 		 */
 		public Double getNumberArgument(String flag) throws ResultUseException {
 			return getNumberArgument(getArg(flag));
@@ -557,9 +559,12 @@ public final class ArgumentParser {
 	 * results. If argType is BOOLEAN, setting this will cause the switch to
 	 * @param description The description of this argument, which is used when
 	 * building the help text created by getBuiltDescription.
+	 * @param usageName The name to display in the documentation
+	 * @param required Whether this parameter is required or not
 	 * @return
 	 */
-	public ArgumentParser addArgument(Character shortArg, String longArg, Type argType, String defaultVal, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(Character shortArg, String longArg, Type argType, String defaultVal, 
+			String description, String usageName, boolean required) {
 		if(argType == Type.BOOLEAN) {
 			throw new IllegalArgumentException("Cannot use addArgument to add a flag. Use addFlag instead.");
 		}
@@ -580,9 +585,10 @@ public final class ArgumentParser {
 	 * there is no Type specified here, that's because the arguments can be
 	 * grabbed as either an array of strings or a string.
 	 *
-	 * @param argType
 	 * @param defaultVal
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
 	public ArgumentParser addArgument(String defaultVal, String description, String usageName, boolean required) {
@@ -592,8 +598,9 @@ public final class ArgumentParser {
 	/**
 	 * Sets the default switch with no default value.
 	 *
-	 * @param argType
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
 	public ArgumentParser addArgument(String description, String usageName, boolean required) {
@@ -607,9 +614,12 @@ public final class ArgumentParser {
 	 * @param longArg
 	 * @param argType
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
-	public ArgumentParser addArgument(Character shortArg, String longArg, Type argType, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(Character shortArg, String longArg, Type argType, String description, 
+			String usageName, boolean required) {
 		return addArgument(shortArg, longArg, argType, null, description, usageName, required);
 	}
 
@@ -620,9 +630,12 @@ public final class ArgumentParser {
 	 * @param argType
 	 * @param defaultVal
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
-	public ArgumentParser addArgument(Character shortArg, Type argType, String defaultVal, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(Character shortArg, Type argType, String defaultVal, String description, 
+			String usageName, boolean required) {
 		return addArgument(shortArg, null, argType, defaultVal, description, usageName, required);
 	}
 
@@ -633,9 +646,12 @@ public final class ArgumentParser {
 	 * @param argType
 	 * @param defaultVal
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
-	public ArgumentParser addArgument(String longArg, Type argType, String defaultVal, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(String longArg, Type argType, String defaultVal, String description, 
+			String usageName, boolean required) {
 		return addArgument(null, longArg, argType, defaultVal, description, usageName, required);
 	}
 
@@ -645,9 +661,12 @@ public final class ArgumentParser {
 	 * @param shortArg
 	 * @param argType
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
-	public ArgumentParser addArgument(Character shortArg, Type argType, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(Character shortArg, Type argType, String description, 
+			String usageName, boolean required) {
 		return addArgument(shortArg, null, argType, null, description, usageName, required);
 	}
 
@@ -657,9 +676,12 @@ public final class ArgumentParser {
 	 * @param longArg
 	 * @param argType
 	 * @param description
+	 * @param usageName
+	 * @param required
 	 * @return
 	 */
-	public ArgumentParser addArgument(String longArg, Type argType, String description, String usageName, boolean required) {
+	public ArgumentParser addArgument(String longArg, Type argType, String description, 
+			String usageName, boolean required) {
 		return addArgument(null, longArg, argType, null, description, usageName, required);
 	}
 
@@ -893,9 +915,7 @@ public final class ArgumentParser {
 	}
 
 	/**
-	 * Returns just the description that was registered with {
-	 *
-	 * @see #addDescription(String)}.
+	 * Returns just the description that was registered with {@link #addDescription(String)}.
 	 * @return The description, or null, if one has not been set yet.
 	 * @see #getBuiltDescription()
 	 */
@@ -917,6 +937,7 @@ public final class ArgumentParser {
 	 *
 	 * @param args
 	 * @return
+	 * @throws com.methodscript.PureUtilities.ArgumentParser.ValidationException
 	 */
 	public ArgumentParserResults match(String args) throws ValidationException {
 		return parse(lex(args));
@@ -932,6 +953,7 @@ public final class ArgumentParser {
 	 *
 	 * @param args
 	 * @return
+	 * @throws com.methodscript.PureUtilities.ArgumentParser.ValidationException
 	 */
 	public ArgumentParserResults match(String[] args) throws ValidationException {
 		return parse(Arrays.asList(args));
