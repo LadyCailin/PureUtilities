@@ -67,7 +67,7 @@ project.
 Third, whatever that class you just created, add the following code to it:
 
     package com.path.to.your.class;
-    import com.laytonsmith.PureUtilities.Common.Annotations.AnnotationChecks;
+    import com.methodscript.PureUtilities.Common.Annotations.AnnotationChecks;
     public class CustomCompileChecks {
         public static void main(String[] args) throws Exception {
             AnnotationChecks.main(args);
